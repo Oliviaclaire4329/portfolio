@@ -305,17 +305,25 @@ img[src*="fruce/05-brand-guide"],
 .split .quote p { margin-top: -0.16em; }
 @media (max-width: 860px) { .sec-label { padding-top: 0; margin-top: -0.2em; } }
 
-/* ---------- Phones: swipe across the projects, scroll down the page ---------- */
+/* ---------- Phones: swipe across the projects, scroll down the page ----------
+   Applies by screen width alone, so it works even before the script runs. */
 @media (max-width: 759px) {
-  .rail.is-static .rail-sticky { padding-block: 24px 0; flex-direction: column; }
-  .rail.is-static .rail-track {
-    gap: 16px; padding-bottom: 8px; width: 100%; max-width: 100vw; align-self: stretch;
-    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain; touch-action: pan-x pan-y;
+  .rail { height: auto !important; }
+  .rail .rail-sticky { position: static; height: auto; padding-block: 24px 0; flex-direction: column; overflow: visible; }
+  .rail .rail-track {
+    transform: none !important;
+    width: 100%; max-width: 100vw; align-self: stretch; align-items: flex-start;
+    gap: 16px; padding-bottom: 8px;
+    padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+    overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory; scroll-padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+    overscroll-behavior-x: contain; scrollbar-width: none;
   }
-  .rail.is-static .rail-card .frame { height: min(52svh, 380px, calc(74vw / var(--ar))); }
-  .rail.is-static .rail-card .cap { min-height: 4.6em; width: 0; min-width: 100%; }
-  .rail.is-static .rail-card:last-child { padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
-  .rail.is-static .rail-count { position: static; display: block; padding: 4px max(var(--gutter), env(safe-area-inset-left, 0px)) 0; }
+  .rail .rail-track::-webkit-scrollbar { display: none; }
+  .rail .rail-card { scroll-snap-align: start; scroll-snap-stop: always; margin-top: 0; transform: none !important; }
+  .rail .rail-card .frame { height: min(52svh, 380px, calc(74vw / var(--ar))); }
+  .rail .rail-card .cap { min-height: 4.6em; width: 0; min-width: 100%; }
+  .rail .rail-card:last-child { padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
+  .rail .rail-count { position: static; display: block; padding: 4px max(var(--gutter), env(safe-area-inset-left, 0px)) 0; }
   .page > .rail + .sec { margin-top: 40px; }
 }
