@@ -316,15 +316,23 @@ img[src*="fruce/05-brand-guide"],
     gap: 16px; padding-bottom: 8px;
     padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
     overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
-    scroll-snap-type: none; touch-action: pan-y;
+    scroll-snap-type: x mandatory; scroll-padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
     overscroll-behavior-x: contain; scrollbar-width: none;
   }
   .rail .rail-track::-webkit-scrollbar { display: none; }
-  .rail .rail-card { scroll-snap-align: none; margin-top: 0; transform: none !important; -webkit-user-drag: none; }
-  .rail .rail-card img { -webkit-user-drag: none; pointer-events: none; }
-  .rail .rail-card .frame { height: min(52svh, 380px, calc(74vw / var(--ar))); }
-  .rail .rail-card .cap { min-height: 4.6em; width: 0; min-width: 100%; }
-  .rail .rail-card:last-child { padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
+  /* Each card is exactly as wide as its image, so captions wrap inside it and
+     Safari can snap cleanly from one project to the next */
+  .rail .rail-card {
+    --w: min(calc(52svh * var(--ar)), calc(380px * var(--ar)), 74vw);
+    width: var(--w); flex: 0 0 var(--w); min-width: 0;
+    display: block; scroll-snap-align: start; scroll-snap-stop: always;
+    margin-top: 0; transform: none !important;
+  }
+  .rail .rail-card .frame { width: 100%; height: auto; aspect-ratio: var(--ar); }
+  .rail .rail-card .cap { display: block; width: auto; min-width: 0; margin-top: 14px; }
+  .rail .rail-card .cap span { display: block; overflow-wrap: break-word; }
+  .rail .rail-card .cap-blurb { margin-top: 4px; }
+  .rail .rail-track::after { content: ""; flex: 0 0 1px; }
   .rail .rail-count { position: static; display: block; padding: 4px max(var(--gutter), env(safe-area-inset-left, 0px)) 0; }
   .page > .rail + .sec { margin-top: 40px; }
 }

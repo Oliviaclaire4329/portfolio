@@ -94,55 +94,6 @@
     track.addEventListener('scroll', function () {
       if (rail.classList.contains('is-static')) setFocus(nearest(track.getBoundingClientRect().left, true));
     }, { passive: true });
-    /* Phones: one swipe = one project, in either direction.
-       The track follows the finger, then settles on the previous or next card. */
-    var phonePager = function () { return window.innerWidth < 760; };
-    var targetLeft = function (i) {
-      var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-      return Math.max(0, Math.min(cards[i].offsetLeft - pad, track.scrollWidth - track.clientWidth));
-    };
-    var currentIndex = function () {
-      var best = 0, bestD = Infinity;
-      cards.forEach(function (c, i) { var d = Math.abs(targetLeft(i) - track.scrollLeft); if (d < bestD) { bestD = d; best = i; } });
-      return best;
-    };
-    var sx = 0, sy = 0, st = 0, startIdx = 0, startLeft = 0, axis = null, raf2 = null;
-    var animateTo = function (to) {
-      if (raf2) cancelAnimationFrame(raf2);
-      var from = track.scrollLeft, t0 = null, dur = 380;
-      var step = function (ts) {
-        if (t0 === null) t0 = ts;
-        var k = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - k, 3);
-        track.scrollLeft = from + (to - from) * e;
-        if (k < 1) raf2 = requestAnimationFrame(step); else raf2 = null;
-      };
-      raf2 = requestAnimationFrame(step);
-    };
-    track.addEventListener('touchstart', function (e) {
-      if (!phonePager()) return;
-      if (raf2) { cancelAnimationFrame(raf2); raf2 = null; }
-      var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now();
-      startLeft = track.scrollLeft; startIdx = currentIndex(); axis = null;
-    }, { passive: true });
-    track.addEventListener('touchmove', function (e) {
-      if (!phonePager()) return;
-      var t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-      if (axis === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-      if (axis !== 'x') return;
-      e.preventDefault();
-      track.scrollLeft = startLeft - dx;
-    }, { passive: false });
-    track.addEventListener('touchend', function (e) {
-      if (!phonePager() || axis !== 'x') return;
-      var dx = (e.changedTouches[0].clientX - sx), v = Math.abs(dx) / Math.max(1, Date.now() - st);
-      var idx = startIdx;
-      if (Math.abs(dx) > 40 || v > 0.3) idx = startIdx + (dx < 0 ? 1 : -1);
-      idx = Math.max(0, Math.min(cards.length - 1, idx));
-      animateTo(targetLeft(idx));
-    }, { passive: true });
-    // Stop the tap from opening a project after a swipe
-    track.addEventListener('click', function (e) { if (axis === 'x') { e.preventDefault(); axis = null; } }, true);
-
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', layout);
     window.addEventListener('load', layout);
