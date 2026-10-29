@@ -100,32 +100,6 @@
     layout();
   }
 
-  /* ---------- Lightbox ---------- */
-  var zooms = document.querySelectorAll('img.zoom');
-  if (zooms.length) {
-    var box = document.createElement('div');
-    box.className = 'lightbox';
-    box.hidden = true;
-    box.setAttribute('role', 'dialog');
-    box.setAttribute('aria-label', 'Enlarged image');
-    box.innerHTML = '<img alt=""><button type="button">Close</button>';
-    body.appendChild(box);
-    var big = box.querySelector('img');
-    var close = function () { box.hidden = true; body.style.overflow = ''; };
-    zooms.forEach(function (z) {
-      z.setAttribute('tabindex', '0');
-      var open = function () {
-        big.src = z.currentSrc || z.src; big.alt = z.alt;
-        box.hidden = false; body.style.overflow = 'hidden';
-        box.querySelector('button').focus();
-      };
-      z.addEventListener('click', open);
-      z.addEventListener('keydown', function (e) { if (e.key === 'Enter') open(); });
-    });
-    box.addEventListener('click', close);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) close(); });
-  }
-
   /* ---------- Copy email ---------- */
   document.querySelectorAll('[data-copy]').forEach(function (b) {
     b.addEventListener('click', function () {
