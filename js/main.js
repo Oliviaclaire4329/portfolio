@@ -45,7 +45,7 @@
         var count = rail.querySelector('.rail-count');
     var distance = 0, focus = -1, ticking = false, stickTop = 0;
 
-    var isStatic = function () { return reduce; };
+    var isStatic = function () { return reduce || window.innerWidth < 760; };
 
     var setFocus = function (idx) {
       if (idx === focus) return;
