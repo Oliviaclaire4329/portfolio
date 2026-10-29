@@ -316,11 +316,12 @@ img[src*="fruce/05-brand-guide"],
     gap: 16px; padding-bottom: 8px;
     padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
     overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory; scroll-padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+    scroll-snap-type: none; touch-action: pan-y;
     overscroll-behavior-x: contain; scrollbar-width: none;
   }
   .rail .rail-track::-webkit-scrollbar { display: none; }
-  .rail .rail-card { scroll-snap-align: start; scroll-snap-stop: always; margin-top: 0; transform: none !important; }
+  .rail .rail-card { scroll-snap-align: none; margin-top: 0; transform: none !important; -webkit-user-drag: none; }
+  .rail .rail-card img { -webkit-user-drag: none; pointer-events: none; }
   .rail .rail-card .frame { height: min(52svh, 380px, calc(74vw / var(--ar))); }
   .rail .rail-card .cap { min-height: 4.6em; width: 0; min-width: 100%; }
   .rail .rail-card:last-child { padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
