@@ -336,7 +336,7 @@ img[src*="fruce/05-brand-guide"],
 
 /* ---------- About text on the left; experience and education under the projects ---------- */
 #about .split > .about { grid-column: 1 / span 9; }
-#experience .about-lists { grid-column: 4 / -1; margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: clamp(32px, 5vw, 80px); }
+#experience .about-lists { grid-column: 4 / -1; margin-top: 0; }
 #experience .about-lists h3 { line-height: 1.6; padding-top: 0.35em; }
 @media (max-width: 860px) { #experience .about-lists h3 { padding-top: 0; } }
 .page > .rail + #experience { margin-top: clamp(24px, 3vw, 40px); }
