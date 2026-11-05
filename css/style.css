@@ -348,3 +348,10 @@ img[src*="fruce/05-brand-guide"],
 .rail .rail-track { scroll-padding-left: var(--edge); }
 .rail .rail-nav { padding-right: max(var(--gutter), env(safe-area-inset-right, 0px), calc((100% - var(--max)) / 2 + var(--gutter))); }
 @media (max-width: 860px) { #about .split > .about { grid-column: 1 / -1; } }
+
+/* ---------- Wordmark with role underneath ---------- */
+.logo { display: inline-flex; flex-direction: column; gap: 6px; }
+.logo-role { font-family: var(--font); font-size: 0.8rem; line-height: 1.2; letter-spacing: 0; color: var(--muted); }
+
+/* ---------- About text at the same size as the project copy ---------- */
+.split .about-text { font-size: var(--s-1); line-height: 1.6; letter-spacing: 0; max-width: 56ch; margin-top: -0.16em; }
