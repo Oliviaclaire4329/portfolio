@@ -333,3 +333,9 @@ img[src*="fruce/05-brand-guide"],
 /* ---------- About sits first, above the projects ---------- */
 #about .split { border-top: 0; padding-top: clamp(32px, 5vw, 72px); }
 .page > #about + .rail { margin-top: 0; }
+
+/* ---------- About text on the left; experience and education under the projects ---------- */
+#about .split > .about { grid-column: 1 / span 9; }
+#experience .about-lists { grid-column: 1 / -1; margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 32px clamp(32px, 5vw, 80px); }
+.page > .rail + #experience { margin-top: clamp(40px, 6vw, 80px); }
+@media (max-width: 860px) { #about .split > .about { grid-column: 1 / -1; } }
