@@ -47,7 +47,7 @@
     var next = rail.querySelector('[data-dir="1"]');
     var focus = -1, ticking = false;
 
-    var padLeft = function () { return parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0; };
+    var padLeft = function () { return parseFloat(getComputedStyle(track).paddingLeft) || 0; };
 
     /* The project lined up with the left edge is the current one */
     var current = function () {
