@@ -90,10 +90,12 @@
     var update = function () {
       ticking = false;
       if (pending !== null) return;
-      if (atEnd()) {
-        /* the last few projects all fit on screen: keep the chosen one, or show the last */
-        setFocus(chosen && focus >= 0 && fullyVisible(focus) ? focus : cards.length - 1);
-      } else setFocus(current());
+      if (track.scrollLeft <= 2) { setFocus(0); return; }
+      if (chosen && focus >= 0 && fullyVisible(focus)) return; /* keep what Prev/Next picked */
+      /* While scrolling, a project becomes current once its left edge passes the middle of the slider */
+      var line = track.getBoundingClientRect().left + track.clientWidth * 0.5 + 2, idx = 0;
+      cards.forEach(function (c, i) { if (c.getBoundingClientRect().left <= line) idx = i; });
+      setFocus(idx);
     };
     var requestUpdate = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
 
