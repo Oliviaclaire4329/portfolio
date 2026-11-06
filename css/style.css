@@ -102,12 +102,12 @@ body::before {
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
   padding-bottom: 8px;
   overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory; scroll-padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  scroll-snap-type: none; scroll-padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
   overscroll-behavior-x: contain; scrollbar-width: none;
   cursor: grab;
 }
 .rail-track::-webkit-scrollbar { display: none; }
-.rail-track::after { content: ""; flex: 0 0 var(--end, 1px); margin-left: calc(-1 * clamp(32px, 6vw, 110px)); }
+.rail-track::after { content: ""; flex: 0 0 var(--end, 0px); margin-left: calc(-1 * var(--gap-end, 0px)); }
 .rail-track:focus-visible { outline: 1px solid var(--ink); outline-offset: -1px; }
 .rail-track.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
 .rail-track.is-dragging .rail-card { pointer-events: none; }
@@ -316,11 +316,10 @@ img[src*="fruce/05-brand-guide"],
 /* ---------- Phones: cards sized to fit, captions always on ---------- */
 @media (max-width: 759px) {
   .rail-track { gap: 16px; cursor: auto; }
-  .rail-track::after { margin-left: -16px; }
   .rail .rail-card {
     --w: min(calc(52svh * var(--ar)), calc(380px * var(--ar)), 74vw);
     width: var(--w); flex: 0 0 var(--w); min-width: 0;
-    display: block; scroll-snap-stop: always;
+    display: block;
   }
   .rail .rail-card .frame { width: 100%; height: auto; aspect-ratio: var(--ar); }
   .rail .rail-card .cap { display: block; width: auto; min-width: 0; margin-top: 14px; opacity: 1; transform: none; }
@@ -350,5 +349,19 @@ img[src*="fruce/05-brand-guide"],
 @media (max-width: 860px) { #about .split > .about { grid-column: 1 / -1; } }
 
 /* ---------- About text at the same size as the project copy ---------- */
-.split .about-text { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.4rem); line-height: 1.55; letter-spacing: 0; max-width: 56ch; margin-top: -0.16em; }
-.about-role { font-style: italic; font-weight: 400; color: var(--hover); }
+.split .about-text { font-size: var(--s-1); line-height: 1.6; letter-spacing: 0; max-width: 56ch; margin-top: -0.16em; }
+
+/* ---------- About: serif headline, sans paragraph underneath ---------- */
+.split .about-title {
+  font-family: var(--serif); font-weight: 400; margin: 0 0 clamp(16px, 1.8vw, 24px);
+  font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4.6rem); line-height: 1.02; letter-spacing: -0.02em;
+}
+.split .about-eyebrow { font-size: 0.9rem; color: var(--muted); margin: 0 0 clamp(10px, 1.2vw, 16px); }
+.split .about-title + .about-text { margin-top: 0; }
+
+/* Phones: a light snap so a swipe settles on a project; desktop scrolls freely */
+@media (max-width: 759px) { .rail-track { scroll-snap-type: x proximity; } }
+
+/* ---------- Serif letter spacing: tighter as it gets bigger ---------- */
+.menu-list a, .foot-cta, .p-title { letter-spacing: -0.02em; }
+.cap-name, .sub-head h2, .next .name, .logo { letter-spacing: -0.01em; }

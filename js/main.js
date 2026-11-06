@@ -60,33 +60,59 @@
       return best;
     };
 
+    var atEnd = function () { return track.scrollLeft >= track.scrollWidth - track.clientWidth - 2; };
+    var fullyVisible = function (i) {
+      var t = track.getBoundingClientRect(), r = cards[i].getBoundingClientRect();
+      return r.left >= t.left - 2 && r.right <= t.right + 2;
+    };
+    var pending = null; /* the project a Prev/Next click is heading to */
+    var chosen = false; /* true when Prev/Next picked the current project */
+
+    /* Let the last project travel to about halfway across, so the end never feels empty
+       but the last caption still has room to show */
+    var sizeEnd = function () {
+      var last = cards[cards.length - 1], cs = getComputedStyle(track);
+      var gap = parseFloat(cs.columnGap) || 0;
+      var room = track.clientWidth * 0.5 - last.offsetWidth - (parseFloat(cs.paddingRight) || 0);
+      track.style.setProperty('--gap-end', room > 0 ? gap + 'px' : '0px');
+      track.style.setProperty('--end', Math.max(0, room) + 'px');
+    };
+
+    var setFocus = function (idx) {
+      if (idx === focus) return;
+      cards.forEach(function (c, i) { c.classList.toggle('is-focus', i === idx); });
+      if (count) count.textContent = (idx + 1) + ' / ' + cards.length;
+      focus = idx;
+      if (prev) prev.disabled = idx <= 0;
+      if (next) next.disabled = idx >= cards.length - 1;
+    };
+
     var update = function () {
       ticking = false;
-      var max = track.scrollWidth - track.clientWidth;
-      var idx = current();
-      if (idx !== focus) {
-        cards.forEach(function (c, i) { c.classList.toggle('is-focus', i === idx); });
-        if (count) count.textContent = (idx + 1) + ' / ' + cards.length;
-        focus = idx;
-      }
-      if (prev) prev.disabled = track.scrollLeft <= 2;
-      if (next) next.disabled = track.scrollLeft >= max - 2;
+      if (pending !== null) return;
+      if (atEnd()) {
+        /* the last few projects all fit on screen: keep the chosen one, or show the last */
+        setFocus(chosen && focus >= 0 && fullyVisible(focus) ? focus : cards.length - 1);
+      } else setFocus(current());
     };
     var requestUpdate = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
 
+    var settle;
     var goTo = function (idx) {
       idx = Math.max(0, Math.min(cards.length - 1, idx));
-      var left = cards[idx].offsetLeft - track.offsetLeft - padLeft();
+      var max = track.scrollWidth - track.clientWidth;
+      var left = Math.min(max, cards[idx].offsetLeft - track.offsetLeft - padLeft());
+      pending = idx; chosen = true; setFocus(idx);
+      clearTimeout(settle);
+      if (Math.abs(track.scrollLeft - left) < 2) { pending = null; return; }
       track.scrollTo({ left: left, behavior: reduce ? 'auto' : 'smooth' });
+      settle = setTimeout(landed, 900);
     };
-    var step = function (dir) { goTo(current() + dir); };
-
-    /* Leave room after the last project so every project can line up on the left */
-    var sizeEnd = function () {
-      var last = cards[cards.length - 1];
-      var room = track.clientWidth - padLeft() - last.offsetWidth - parseFloat(getComputedStyle(track).paddingRight);
-      track.style.setProperty('--end', Math.max(1, room) + 'px');
-    };
+    var step = function (dir) { goTo((pending !== null ? pending : focus) + dir); };
+    var release = function () { pending = null; chosen = false; clearTimeout(settle); };
+    var landed = function () { pending = null; clearTimeout(settle); };
+    track.addEventListener('scrollend', function () { if (pending !== null) landed(); });
+    ['wheel', 'touchstart'].forEach(function (ev) { track.addEventListener(ev, release, { passive: true }); });
 
     if (prev) prev.addEventListener('click', function () { step(-1); });
     if (next) next.addEventListener('click', function () { step(1); });
@@ -99,7 +125,7 @@
     var down = false, startX = 0, startLeft = 0, moved = false;
     track.addEventListener('pointerdown', function (e) {
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
+      release(); down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
     });
     window.addEventListener('pointermove', function (e) {
       if (!down) return;
@@ -110,7 +136,7 @@
     window.addEventListener('pointerup', function () {
       if (!down) return;
       down = false;
-      if (moved) { track.classList.remove('is-dragging'); goTo(current()); }
+      if (moved) { track.classList.remove('is-dragging'); requestUpdate(); }
     });
     track.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
     track.addEventListener('dragstart', function (e) { e.preventDefault(); });
