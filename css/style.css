@@ -365,3 +365,4 @@ img[src*="fruce/05-brand-guide"],
 /* ---------- Serif letter spacing: tighter as it gets bigger ---------- */
 .menu-list a, .foot-cta, .p-title { letter-spacing: -0.02em; }
 .cap-name, .sub-head h2, .next .name, .logo { letter-spacing: -0.01em; }
+
