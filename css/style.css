@@ -376,5 +376,14 @@ img[src*="fruce/05-brand-guide"],
   position: absolute; left: 5.269%; top: 8.542%; width: 89.57%; height: 79.11%;
   object-fit: cover; background: #fff;
 }
+.reel-shade {
+  position: absolute; left: 5.269%; top: 8.542%; width: 89.57%; height: 79.11%; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.42) 0%, rgba(0,0,0,.18) 9%, rgba(0,0,0,0) 20%);
+}
 .reel-frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-@media (max-width: 760px) { .reels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .reels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Phones: texting reel last, so the two model reels sit diagonally */
+  .reels .reel:nth-child(3) { order: 4; }
+  .reels .reel:nth-child(4) { order: 3; }
+}
