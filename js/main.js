@@ -149,6 +149,24 @@
     sizeEnd(); update();
   }
 
+
+  /* ---------- Motion reels: play while on screen, stay still for reduced motion ---------- */
+  var reels = document.querySelectorAll('.reel video');
+  if (reels.length) {
+    var quiet = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (quiet) {
+      reels.forEach(function (v) { v.controls = true; });
+    } else if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.preload = 'auto'; var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+          else e.target.pause();
+        });
+      }, { rootMargin: '200px 0px' });
+      reels.forEach(function (v) { io.observe(v); });
+    } else reels.forEach(function (v) { v.autoplay = true; v.preload = 'auto'; v.play(); });
+  }
+
   /* ---------- Copy email ---------- */
   document.querySelectorAll('[data-copy]').forEach(function (b) {
     b.addEventListener('click', function () {
