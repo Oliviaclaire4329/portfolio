@@ -373,11 +373,11 @@ img[src*="fruce/05-brand-guide"],
 .reel { margin: 0; }
 .reel-phone { position: relative; aspect-ratio: 911 / 1838; }
 .reel-phone video {
-  position: absolute; left: 5.269%; top: 8.542%; width: 89.57%; height: 79.11%;
+  position: absolute; left: 4.4%; top: 8.0%; width: 91.3%; height: 80.6%;
   object-fit: cover; background: #fff;
 }
 .reel-shade {
-  position: absolute; left: 5.269%; top: 8.542%; width: 89.57%; height: 79.11%; pointer-events: none;
+  position: absolute; left: 4.4%; top: 8.0%; width: 91.3%; height: 80.6%; pointer-events: none;
   background: linear-gradient(to bottom, rgba(0,0,0,.42) 0%, rgba(0,0,0,.18) 9%, rgba(0,0,0,0) 20%);
 }
 .reel-frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -386,7 +386,7 @@ img[src*="fruce/05-brand-guide"],
 }
 
 /* Story header drawn over reels that don't have one baked in */
-.reel-ui { position: absolute; left: 5.269%; top: 8.542%; width: 89.57%; height: 79.11%; pointer-events: none; container-type: inline-size;
+.reel-ui { position: absolute; left: 4.4%; top: 8.0%; width: 91.3%; height: 80.6%; pointer-events: none; container-type: inline-size;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: #fff; }
 .ui-bar { position: absolute; left: 2.2cqw; right: 2.2cqw; top: 2.1cqw; height: 0.4cqw; border-radius: 1cqw; background: rgba(255,255,255,.6); }
 .reel-ui .ui-avatar { position: absolute; left: 2.85cqw; top: 4.5cqw; width: 9.2cqw; height: 9.2cqw; max-width: none; border-radius: 50%; }
@@ -394,3 +394,9 @@ img[src*="fruce/05-brand-guide"],
 .ui-name span { font-weight: 400; opacity: .85; margin-left: .4em; }
 .ui-x { position: absolute; right: 2.2cqw; top: 6.1cqw; width: 6cqw; height: 6cqw; }
 .cell.phone .reel-phone { width: 100%; }
+
+/* Reel phones next to wide images keep a standard phone size; the image beside them centres */
+@media (min-width: 761px) {
+  .row:has(> .reel-cell) { align-items: center; }
+  .row > .reel-cell { flex: 0 0 25.6%; }
+}
