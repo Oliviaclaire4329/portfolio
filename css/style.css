@@ -394,9 +394,3 @@ img[src*="fruce/05-brand-guide"],
 .ui-name span { font-weight: 400; opacity: .85; margin-left: .4em; }
 .ui-x { position: absolute; right: 2.2cqw; top: 6.1cqw; width: 6cqw; height: 6cqw; }
 .cell.phone .reel-phone { width: 100%; }
-
-/* Reel phones next to wide images keep a standard phone size; the image beside them centres */
-@media (min-width: 761px) {
-  .row:has(> .reel-cell) { align-items: center; }
-  .row > .reel-cell { flex: 0 0 25.6%; }
-}
