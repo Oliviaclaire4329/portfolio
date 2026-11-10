@@ -157,13 +157,19 @@
     if (quiet) {
       reels.forEach(function (v) { v.controls = true; });
     } else if ('IntersectionObserver' in window) {
+      /* Start downloading well before a reel scrolls into view, so it's sharp and ready when it arrives */
+      var near = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.preload = 'auto'; e.target.load(); near.unobserve(e.target); }
+        });
+      }, { rootMargin: '1500px 0px' });
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) { e.target.preload = 'auto'; var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
+          if (e.isIntersecting) { var p = e.target.play(); if (p && p.catch) p.catch(function () {}); }
           else e.target.pause();
         });
-      }, { rootMargin: '200px 0px' });
-      reels.forEach(function (v) { io.observe(v); });
+      }, { rootMargin: '100px 0px' });
+      reels.forEach(function (v) { near.observe(v); io.observe(v); });
     } else reels.forEach(function (v) { v.autoplay = true; v.preload = 'auto'; v.play(); });
   }
 
