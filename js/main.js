@@ -151,7 +151,7 @@
 
 
   /* ---------- Motion reels: play while on screen, stay still for reduced motion ---------- */
-  var reels = document.querySelectorAll('.reel video');
+  var reels = document.querySelectorAll('.reel-phone video');
   if (reels.length) {
     var quiet = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (quiet) {
