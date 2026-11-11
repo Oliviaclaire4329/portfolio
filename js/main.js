@@ -153,6 +153,10 @@
   /* ---------- Motion reels: play while on screen, stay still for reduced motion ---------- */
   var reels = document.querySelectorAll('.reel-phone video');
   if (reels.length) {
+    /* Laptops and desktops get the full-resolution files; phones keep the lighter ones */
+    if (window.matchMedia('(min-width: 761px)').matches) {
+      reels.forEach(function (v) { var hd = v.getAttribute('data-hd'); if (hd) v.src = hd; });
+    }
     var quiet = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (quiet) {
       reels.forEach(function (v) { v.controls = true; });
