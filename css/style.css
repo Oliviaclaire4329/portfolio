@@ -394,3 +394,9 @@ img[src*="fruce/05-brand-guide"],
 .ui-name span { font-weight: 400; opacity: .85; margin-left: .4em; }
 .ui-x { position: absolute; right: 2.2cqw; top: 6.1cqw; width: 6cqw; height: 6cqw; }
 .cell.phone .reel-phone { width: 100%; }
+
+/* Acknowledgement of Country, above the copyright line */
+.acknowledgement { max-width: 40rem; margin: clamp(40px, 5vw, 64px) 0 0; line-height: 1.5; }
+.acknowledgement + .foot-base { margin-top: 20px; }
+.acknowledgement { max-width: none; }
+@media (max-width: 760px) { .acknowledgement .br-lg { display: none; } }
