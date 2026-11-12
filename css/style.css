@@ -400,3 +400,6 @@ img[src*="fruce/05-brand-guide"],
 .acknowledgement + .foot-base { margin-top: 20px; }
 .acknowledgement { max-width: none; }
 @media (max-width: 760px) { .acknowledgement .br-lg { display: none; } }
+
+/* Jurassic story is cropped slightly to remove the legal line, which nudges its header left */
+.reel-ui.ui-shift .ui-avatar { left: 1.55cqw; top: 4.6cqw; width: 9.45cqw; height: 9.45cqw; }
